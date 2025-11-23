@@ -1,28 +1,52 @@
-// Example controller functions for usuarios.controllers.ts
+import { Router, Request, Response } from "express";
+import { usuarios, Usuario } from "../data/data";
 
-import { Request, Response } from 'express';
+const router = Router();
 
-export const getAllUsuarios = (req: Request, res: Response) => {
-    // Implement logic to get all usuarios
-    res.send('Get all usuarios');
-};
+// GET todos
+router.get("/", (req: Request, res: Response) => {
+    res.json(usuarios);
+});
 
-export const getUsuarioById = (req: Request, res: Response) => {
-    // Implement logic to get usuario by ID
-    res.send(`Get usuario by ID: ${req.params.id}`);
-};
+// GET uno por id
+router.get("/:id", (req: Request, res: Response) => {
+    const usuario = usuarios.find(u => u.id === Number(req.params.id));
+    if (!usuario) return res.status(404).json({ error: "Usuario no encontrado" });
+    res.json(usuario);
+});
 
-export const createUsuario = (req: Request, res: Response) => {
-    // Implement logic to create a new usuario
-    res.send('Create usuario');
-};
+// POST crear
+router.post("/", (req: Request, res: Response) => {
+    const { nombre, correo } = req.body;
 
-export const updateUsuario = (req: Request, res: Response) => {
-    // Implement logic to update usuario
-    res.send(`Update usuario with ID: ${req.params.id}`);
-};
+    const nuevo: Usuario = {
+        id: usuarios.length + 1,
+        nombre,
+        correo
+    };
 
-export const deleteUsuario = (req: Request, res: Response) => {
-    // Implement logic to delete usuario
-    res.send(`Delete usuario with ID: ${req.params.id}`);
-};
+    usuarios.push(nuevo);
+    res.status(201).json(nuevo);
+});
+
+// PUT actualizar
+router.put("/:id", (req: Request, res: Response) => {
+    const usuario = usuarios.find(u => u.id === Number(req.params.id));
+    if (!usuario) return res.status(404).json({ error: "Usuario no encontrado" });
+
+    usuario.nombre = req.body.nombre ?? usuario.nombre;
+    usuario.correo = req.body.correo ?? usuario.correo;
+
+    res.json(usuario);
+});
+
+// DELETE eliminar
+router.delete("/:id", (req: Request, res: Response) => {
+    const index = usuarios.findIndex(u => u.id === Number(req.params.id));
+    if (index === -1) return res.status(404).json({ error: "Usuario no encontrado" });
+
+    usuarios.splice(index, 1);
+    res.json({ mensaje: "Usuario eliminado" });
+});
+
+export default router;

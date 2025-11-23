@@ -2,17 +2,23 @@ openapi: 3.0.0
 info:
   title: API Restaurante
   version: 1.0.0
-  description: API para gestión de platos
+  description: API para gestión de platos, pedidos y usuarios
+
 servers:
   - url: http://localhost:3000
 
 paths:
-  /platos:
+
+  #############################################
+  #               PLATOS
+  #############################################
+  /api/platos:
     get:
       summary: Obtener todos los platos
       responses:
         '200':
           description: Lista de platos
+
     post:
       summary: Crear un nuevo plato
       requestBody:
@@ -30,7 +36,7 @@ paths:
         '201':
           description: Plato creado
 
-  /platos/{id}:
+  /api/platos/{id}:
     get:
       summary: Obtener un plato por id
       parameters:
@@ -44,6 +50,7 @@ paths:
           description: Plato encontrado
         '404':
           description: Plato no encontrado
+
     put:
       summary: Actualizar un plato por id
       parameters:
@@ -53,7 +60,6 @@ paths:
             type: integer
           required: true
       requestBody:
-
         required: true
         content:
           application/json:
@@ -63,7 +69,162 @@ paths:
                 nombre:
                   type: string
                 precio:
-                  type: number        
+                  type: number
       responses:
-        '200':    
-          
+        '200':
+          description: Plato actualizado correctamente
+        '404':
+          description: Plato no encontrado
+
+    delete:
+      summary: Eliminar un plato por id
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '204':
+          description: Plato eliminado
+        '404':
+          description: Plato no encontrado
+
+  #############################################
+  #               PEDIDOS
+  #############################################
+  /api/pedidos:
+    get:
+      summary: Obtener todos los pedidos
+      responses:
+        '200':
+          description: Lista de pedidos
+
+    post:
+      summary: Crear un nuevo pedido
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cliente:
+                  type: string
+                platos:
+                  type: array
+                  items:
+                    type: integer
+      responses:
+        '201':
+          description: Pedido creado
+
+  /api/pedidos/{id}:
+    get:
+      summary: Obtener un pedido por id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Pedido encontrado
+        '404':
+          description: Pedido no encontrado
+
+    delete:
+      summary: Eliminar un pedido por id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Pedido eliminado
+        '404':
+          description: Pedido no encontrado
+
+  #############################################
+  #               USUARIOS
+  #############################################
+  /api/usuarios:
+    get:
+      summary: Obtener todos los usuarios
+      responses:
+        '200':
+          description: Lista de usuarios
+
+    post:
+      summary: Crear un usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                correo:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: Usuario creado
+
+  /api/usuarios/{id}:
+    get:
+      summary: Obtener un usuario por id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Usuario encontrado
+        '404':
+          description: Usuario no encontrado
+
+    put:
+      summary: Actualizar un usuario
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                correo:
+                  type: string
+      responses:
+        '200':
+          description: Usuario actualizado
+
+    delete:
+      summary: Eliminar un usuario
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Usuario eliminado
+        '404':
+          description: Usuario no encontrado

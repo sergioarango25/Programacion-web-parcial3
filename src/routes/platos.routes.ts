@@ -1,37 +1,49 @@
 import { Router, Request, Response } from "express";
-
-// Controller handlers implemented inline to avoid a missing external module.
-const getPlatos = (req: Request, res: Response) => {
-  res.json({ message: "getPlatos" });
-};
-
-const getPlatoById = (req: Request, res: Response) => {
-  const { id } = req.params;
-  res.json({ message: "getPlatoById", id });
-};
-
-const postPlato = (req: Request, res: Response) => {
-  const body = req.body;
-  res.status(201).json({ message: "postPlato", body });
-};
-
-const putPlato = (req: Request, res: Response) => {
-  const { id } = req.params;
-  const body = req.body;
-  res.json({ message: "putPlato", id, body });
-};
-
-const deletePlato = (req: Request, res: Response) => {
-  const { id } = req.params;
-  res.status(204).send();
-};
+import { platos, Plato } from "../data/data";
 
 const router = Router();
 
-router.get("/", getPlatos);
-router.get("/:id", getPlatoById);
-router.post("/", postPlato);
-router.put("/:id", putPlato);
-router.delete("/:id", deletePlato);
+router.get("/", (req: Request, res: Response) => {
+    res.json(platos);
+});
+
+router.get("/:id", (req: Request, res: Response) => {
+    const plato = platos.find(p => p.id === Number(req.params.id));
+    if (!plato) return res.status(404).json({ error: "Plato no encontrado" });
+    res.json(plato);
+});
+
+router.post("/", (req: Request, res: Response) => {
+    const { nombre, precio, descripcion } = req.body;
+
+    const nuevo: Plato = {
+        id: platos.length + 1,
+        nombre,
+        precio,
+        descripcion
+    };
+
+    platos.push(nuevo);
+    res.status(201).json(nuevo);
+});
+
+router.put("/:id", (req: Request, res: Response) => {
+    const plato = platos.find(p => p.id === Number(req.params.id));
+    if (!plato) return res.status(404).json({ error: "Plato no encontrado" });
+
+    plato.nombre = req.body.nombre ?? plato.nombre;
+    plato.precio = req.body.precio ?? plato.precio;
+    plato.descripcion = req.body.descripcion ?? plato.descripcion;
+
+    res.json(plato);
+});
+
+router.delete("/:id", (req: Request, res: Response) => {
+    const index = platos.findIndex(p => p.id === Number(req.params.id));
+    if (index === -1) return res.status(404).json({ error: "Plato no encontrado" });
+
+    platos.splice(index, 1);
+    res.json({ mensaje: "Plato eliminado" });
+});
 
 export default router;

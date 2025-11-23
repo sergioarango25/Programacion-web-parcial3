@@ -1,0 +1,73 @@
+openapi: 3.0.0
+info:
+  title: API Restaurante
+  version: 1.0.0
+  description: API para gestión de platos
+
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /platos:
+    get:
+      summary: Obtener todos los platos
+      responses:
+        '200':
+          description: Lista de platos
+
+    post:
+      summary: Crear un nuevo plato
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                precio:
+                  type: number
+      responses:
+        '201':
+          description: Plato creado
+
+  /platos/{id}:
+    get:
+      summary: Obtener un plato por id
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Plato encontrado
+        '404':
+          description: Plato no encontrado
+
+    put:
+      summary: Actualizar un plato por id
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                precio:
+                  type: number
+      responses:
+        '200':
+          description: Plato actualizado correctamente
+        '404':
+          description: Plato no encontrado
