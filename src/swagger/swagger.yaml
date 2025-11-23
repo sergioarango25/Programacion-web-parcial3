@@ -44,3 +44,26 @@ paths:
           description: Plato encontrado
         '404':
           description: Plato no encontrado
+    put:
+      summary: Actualizar un plato por id
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                precio:
+                  type: number        
+      responses:
+        '200':    
+          
