@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-# Vue 3 + Vite
+Sebastian Certuche, Sergio Arango.
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Link videos: https://files.fm/u/6ahyuy6n9b#/view/ps47xq3csq, https://files.fm/u/wpp9fwh5bz#/view/wrw5dhd5qe.
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
-=======
-# Sebastian Certuche 
-# Sergio Arango
->>>>>>> 970db48d5c9f1b132fa4587f1069f5d8890e6ed3
+Tuvimos que comprimir la carpeta de fronted porque no la reconocia Github para subirla, entonces la subia vacia, esta comprimida en .zip en la rama "project"
